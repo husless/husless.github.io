@@ -1,0 +1,677 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="人生得意须尽欢， 莫使金樽空对月" />
+
+
+
+  <meta name="keywords" content="JavaScript,Meteor," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="最近发现了个很有趣、很强大的东西 Meteor，这一个构建在 Node.js 和 MongoDB 之上的，用于构建 Web 端和移动端实时应用的 Full Stack 开源平台。Meteor 位于程序数据库和用户界面之间,保持二者之间的数据同步更新。Meteor 在客户端和服务器端都使用 JavaScript 作为开发语言，因此代码能在前后两端共用。Meteor 还有活跃的社区和丰富的第三方pac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识 Meteor">
+<meta property="og:url" content="https://husless.github.io/2015/07/13/the-first-sight-on-meteor/index.html">
+<meta property="og:site_name" content="草原上的狼">
+<meta property="og:description" content="最近发现了个很有趣、很强大的东西 Meteor，这一个构建在 Node.js 和 MongoDB 之上的，用于构建 Web 端和移动端实时应用的 Full Stack 开源平台。Meteor 位于程序数据库和用户界面之间,保持二者之间的数据同步更新。Meteor 在客户端和服务器端都使用 JavaScript 作为开发语言，因此代码能在前后两端共用。Meteor 还有活跃的社区和丰富的第三方pac">
+<meta property="og:image" content="https://raw.githubusercontent.com/husless/husless.github.io/master/images/meter-todos.png">
+<meta property="og:updated_time" content="2015-09-23T09:27:32.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识 Meteor">
+<meta name="twitter:description" content="最近发现了个很有趣、很强大的东西 Meteor，这一个构建在 Node.js 和 MongoDB 之上的，用于构建 Web 端和移动端实时应用的 Full Stack 开源平台。Meteor 位于程序数据库和用户界面之间,保持二者之间的数据同步更新。Meteor 在客户端和服务器端都使用 JavaScript 作为开发语言，因此代码能在前后两端共用。Meteor 还有活跃的社区和丰富的第三方pac">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> 初识 Meteor | 草原上的狼 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">草原上的狼</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              初识 Meteor
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-13T00:00:00+08:00" content="2015-07-13">
+            2015-07-13
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/13/the-first-sight-on-meteor/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/13/the-first-sight-on-meteor/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>最近发现了个很有趣、很强大的东西 <a href="https://www.meteor.com" target="_blank" rel="external">Meteor</a>，这一个构建在 Node.js 和 MongoDB 之上的，用于构建 Web 端和移动端实时应用的 Full Stack 开源平台。Meteor 位于程序数据库和用户界面之间,保持二者之间的数据同步更新。Meteor 在客户端和服务器端都使用 JavaScript 作为开发语言，因此代码能在前后两端共用。Meteor 还有活跃的社区和丰富的<a href="https://atmospherejs.com/" target="_blank" rel="external">第三方packages</a> 支持。</p>
+<p>Meteor 的安装非常简单，只需要一条命令(当然是在已经安装了 Node.js 的情况下，否则先安装 Node.js)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://install.meteor.com/ | sh</span><br></pre></td></tr></table></figure>
+<p>安装好之后，就可以用来构建有趣的应用了。Meteor 自带了几个样例可以试用、参考。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ meter create --list</span><br><span class="line">Available examples:</span><br><span class="line">  clock</span><br><span class="line">  leaderboard</span><br><span class="line">  localmarket</span><br><span class="line">  todos</span><br><span class="line"></span><br><span class="line">Create a project from an example with <span class="string">'meteor create --example &lt;name&gt;'</span>.</span><br></pre></td></tr></table></figure>
+<p>其中，<code>todos</code> 是一个 Todos 应用， 列出了 Meteor 的主要特性。按照上面提示创建 Todos， 并运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ meter create --example todos</span><br><span class="line">$ <span class="built_in">cd</span> todos</span><br><span class="line">$ meteor</span><br><span class="line">[[[[[ ~/program/meteor/todos ]]]]]</span><br><span class="line"></span><br><span class="line">=&gt; Started proxy.</span><br><span class="line">=&gt; Started MongoDB.</span><br><span class="line">=&gt; Started your app.</span><br><span class="line"></span><br><span class="line">=&gt; App running at: http://localhost:<span class="number">3000</span>/</span><br></pre></td></tr></table></figure>
+<p>在浏览器打开<code>http://localhost:3000/</code>：</p>
+<p><img src="https://raw.githubusercontent.com/husless/husless.github.io/master/images/meter-todos.png" alt="Meteor todos"></p>
+<ul>
+<li><p>Data on the Wire. Meteor 并不在网络上发生HTML，而是将一切‘编译’成 <code>JavaScript</code> 和 <code>CSS</code> 再交给 Client(比如浏览器) 渲染。</p>
+</li>
+<li><p>One Language. Meteor 在 Server 和 Client 端都用 <code>JavaScript</code>。</p>
+</li>
+<li><p>Database Everywhere. Meteor 的 Client 端有自己的 Database–Minimongo，Client 只与自己本地的 Minimongo 进行数据交互。Meteor 使用一种 Pub/Sub 模型来控制 MongoDB 服务器与 Minimongo 客户端之间同步的数据。默认情况下，所有服务器端 Meteor 集合都会被发布。Meteor 使用 DDP（Distributed Data Protocol，分布式数据协议）在客户端与服务器之间移动数据。</p>
+</li>
+<li><p>Latency Compensation. 在 Client 端，Meteor 会预抓取(prefetch)数据，然后模拟出像是 Server 端及时响应过来的。Minimongo 使用 latency compensation 来反映数据库更改，从根本上讲，延迟补偿是大数据管理领域中的 最终一致性概念的一种视觉表现。当通过 Minimongo stub 更新客户端上的数据时，任何更改都会立即在客户端上反映出来，包括反应性重新呈现。这些更改还会被传播到服务器。但是，传播的更改可能会失败，失败的原因有很多，包括拒绝访问。Pub/Sub 机制负责确保客户端最终(通常很快)反映了服务器的实际状态。延迟补偿可实现一种无需等待的、响应非常迅速的 UI，这是现代 Web 2.0 应用程序的一个鲜明特征。而代价可能是出现短暂的视觉数据不一致性。 </p>
+</li>
+<li><p>Full Stack Reactivity.  Meteor 中从数据库(database)到模板层(template)一切变化都是实时的，任何更新都会自动同步。</p>
+</li>
+<li><p>Embrace the Ecosystem. Meteor 是一个开源平台，同时集成了许多优秀的开源工具和框架，比如能通过命令 <code>meteor add-platform android</code> 和 <code>meteor add-platform ios</code> 分别添加 Android 和 iOS 模拟器。</p>
+</li>
+<li><p>Simplicity Equals Productivity.</p>
+</li>
+</ul>
+<p>与传统的LAMP(或LEMP)架构不同，Meteor 实际上采用 Pub/Sub 机制，以 Database Everywhere方式，在 Server 端为 MongoDB，在 Client 端为 Minimongo；借助 <a href="https://developer.mozilla.org/en-US/docs/WebSockets" target="_blank" rel="external">Websocket</a> 在 Server 端和 Client 端之间实现永久连接；Client 只与本地 Minimongo进行数据操作，因此速度非常快，同时以 Ajax 方式通过 Websocket 与 Server实现数据同步。</p>
+<p>Meteor 是如此的强大，它将当前最新、最先进技术组合起来，使用起来却非常方便快捷，非常值得学习和使用。而本文只是对 Meteor 的简单介绍，还需要对其进一步深入的学习和使用。</p>
+<p>主要的学习资料：</p>
+<ul>
+<li><a href="http://docs.meteor.com/#/basic/" target="_blank" rel="external">官方文档</a>当然通常都是最权威的；</li>
+<li>Meteor 开发者团队出的 <a href="https://www.discovermeteor.com" target="_blank" rel="external">Discover Meteor</a> 也是非常值得推荐的资料；</li>
+<li><a href="https://forums.meteor.com/" target="_blank" rel="external">Meteor Forums</a>；</li>
+<li>使用，并在 <a href="https://github.com/meteor/meteor/wiki/Contributing-to-Meteor" target="_blank" rel="external">Gitgub 上为 Meteor 贡献代码</a>。</li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/Meteor/" rel="tag">#Meteor</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/09/advanced-ssh-security-tips-and-tricks/" rel="prev">增强SSH安全性的一些技巧</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/11/what-is-a-metaclass-in-python/" rel="next">What Is a Metaclass In Python</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="https://avatars1.githubusercontent.com/u/2921692?v=3&s=460" alt="Huszhi" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Huszhi</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">人生得意须尽欢， 莫使金樽空对月</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/husless" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/huszhi" target="_blank">Twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2014 - 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Huszhi</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'huszhi';
+      var disqus_identifier = '2015/07/13/the-first-sight-on-meteor/';
+      var disqus_title = '初识 Meteor';
+      var disqus_url = 'https://husless.github.io/2015/07/13/the-first-sight-on-meteor/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
