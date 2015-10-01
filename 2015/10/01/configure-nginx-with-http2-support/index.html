@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="ubuntu,wifi," />
+  <meta name="keywords" content="http2,nginx," />
 
 
 
@@ -39,28 +39,34 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="服务器版的Ubuntu默认禁止连接WiFi。
-用rfkill命令开启：
-1sudo rfkill unblock all
-然后配置/etc/network/interfaces:
-1234567auto wlan0    iface wlan0 inet dhcp    wpa-driver wext    wpa-ssid &quot;TP-LINK_200F82&quot;    wpa-key-mgmt WPA">
+<meta name="description" content="刚发布不久的 Nginx 1.9.5 正式支持HTTP/2，于是就来折腾一番吧。由于 HTTP/2 是基于 https， 因此必须先配置 Nginx 支持 https。文中所有操作都在自己本地机器上进行测试，采用的是 openssl 生成自签名证书。
+
+创建 Key：
+1$ openssl genrsa -des3 -out test.key 1024
+
+创建签名请求：
+1$ openssl re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="配置Ubuntu Server 14.04 连接无线WiFi">
-<meta property="og:url" content="https://husless.github.io/2015/06/28/configure-ubuntu-server-to-use-wifi/index.html">
+<meta property="og:title" content="Configure Nginx with HTTP/2 Support">
+<meta property="og:url" content="https://husless.github.io/2015/10/01/configure-nginx-with-http2-support/index.html">
 <meta property="og:site_name" content="草原上的狼">
-<meta property="og:description" content="服务器版的Ubuntu默认禁止连接WiFi。
-用rfkill命令开启：
-1sudo rfkill unblock all
-然后配置/etc/network/interfaces:
-1234567auto wlan0    iface wlan0 inet dhcp    wpa-driver wext    wpa-ssid &quot;TP-LINK_200F82&quot;    wpa-key-mgmt WPA">
-<meta property="og:updated_time" content="2015-09-23T09:27:32.425Z">
+<meta property="og:description" content="刚发布不久的 Nginx 1.9.5 正式支持HTTP/2，于是就来折腾一番吧。由于 HTTP/2 是基于 https， 因此必须先配置 Nginx 支持 https。文中所有操作都在自己本地机器上进行测试，采用的是 openssl 生成自签名证书。
+
+创建 Key：
+1$ openssl genrsa -des3 -out test.key 1024
+
+创建签名请求：
+1$ openssl re">
+<meta property="og:updated_time" content="2015-10-01T08:21:24.781Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="配置Ubuntu Server 14.04 连接无线WiFi">
-<meta name="twitter:description" content="服务器版的Ubuntu默认禁止连接WiFi。
-用rfkill命令开启：
-1sudo rfkill unblock all
-然后配置/etc/network/interfaces:
-1234567auto wlan0    iface wlan0 inet dhcp    wpa-driver wext    wpa-ssid &quot;TP-LINK_200F82&quot;    wpa-key-mgmt WPA">
+<meta name="twitter:title" content="Configure Nginx with HTTP/2 Support">
+<meta name="twitter:description" content="刚发布不久的 Nginx 1.9.5 正式支持HTTP/2，于是就来折腾一番吧。由于 HTTP/2 是基于 https， 因此必须先配置 Nginx 支持 https。文中所有操作都在自己本地机器上进行测试，采用的是 openssl 生成自签名证书。
+
+创建 Key：
+1$ openssl genrsa -des3 -out test.key 1024
+
+创建签名请求：
+1$ openssl re">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -70,7 +76,7 @@
   };
 </script>
 
-  <title> 配置Ubuntu Server 14.04 连接无线WiFi | 草原上的狼 </title>
+  <title> Configure Nginx with HTTP/2 Support | 草原上的狼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -185,7 +191,7 @@
           
           
             
-              配置Ubuntu Server 14.04 连接无线WiFi
+              Configure Nginx with HTTP/2 Support
             
           
         </h1>
@@ -194,8 +200,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-06-28T00:00:00+08:00" content="2015-06-28">
-            2015-06-28
+          <time itemprop="dateCreated" datetime="2015-10-01T14:34:48+08:00" content="2015-10-01">
+            2015-10-01
           </time>
         </span>
 
@@ -205,8 +211,8 @@
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/06/28/configure-ubuntu-server-to-use-wifi/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/28/configure-ubuntu-server-to-use-wifi/" itemprop="commentsCount"></span>
+            <a href="/2015/10/01/configure-nginx-with-http2-support/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/01/configure-nginx-with-http2-support/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -220,14 +226,40 @@
       
 
       
-        <span itemprop="articleBody"><p>服务器版的Ubuntu默认禁止连接WiFi。</p>
-<p>用<code>rfkill</code>命令开启：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rfkill unblock all</span><br></pre></td></tr></table></figure>
-<p>然后配置<code>/etc/network/interfaces</code>:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">auto wlan0</span><br><span class="line">    iface wlan0 inet dhcp</span><br><span class="line">    wpa-driver wext</span><br><span class="line">    wpa-ssid <span class="string">"TP-LINK_200F82"</span></span><br><span class="line">    wpa-key-mgmt WPA-PSK</span><br><span class="line">    wpa-ap-scan <span class="number">2</span></span><br><span class="line">    wpa-psk <span class="number">9</span>b231391b504add363e12b6d19a9c4eaf52d96eaa91266662c62bfa9aac1529</span><br></pre></td></tr></table></figure>
-<p>其中，<code>wpa-ssid</code> 指WiFi信号的SSID； <code>wpa-key-mgmt</code> 表示信号加密格式； <code>wpa-psk</code> 为加密过的WiFi 密码，通过如下命令产生：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpa_passphrase SSID “password”</span><br></pre></td></tr></table></figure>
-<p>重启网络服务，即可连接WiFi 。</p>
+        <span itemprop="articleBody"><p>刚发布不久的 Nginx 1.9.5 正式支持HTTP/2，于是就来折腾一番吧。由于 HTTP/2 是基于 https， 因此必须先配置 Nginx 支持 https。文中所有操作都在自己本地机器上进行测试，采用的是 <code>openssl</code> 生成自签名证书。</p>
+<ol>
+<li><p>创建 Key：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl genrsa -des3 -out test.key <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建签名请求：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl req -new -subj <span class="string">"/C=US/ST=Mars/L=iTranswarp/O=iTranswarp/OU=iTranswrap/CN=test"</span> -key test.key -out test.csr</span><br></pre></td></tr></table></figure>
+<p>在实际部署时，必须将 CN 字段中的 <code>test</code> 换成域名，否则无法通过浏览器验证。</p>
+</li>
+<li><p>将 Key 的口令移除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv test.key test.origin.key</span><br><span class="line">$ openssl rsa -in test.origin.key -out test.key</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用Key签名证书:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -req -days <span class="number">3650</span> -in test.csr -signkey test.key -out test.crt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置 Nginx</p>
+<ul>
+<li>重定向所有的流量到 SSL/TLS</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen <span class="number">80</span>;</span><br><span class="line">    location / &#123;</span><br><span class="line">            <span class="built_in">return</span> <span class="number">301</span> https://<span class="variable">$host</span><span class="variable">$request_uri</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启用 HTTP/2</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen              <span class="number">443</span> ssl http2 default_server;</span><br><span class="line">    server_name         localhost;</span><br><span class="line">    keeplive_timeout    <span class="number">70</span>;</span><br><span class="line"></span><br><span class="line">    ssl_certificate     /path/to/test.crt;</span><br><span class="line">    ssl_certificate_key /path/to/test.key;</span><br><span class="line">    ssl_session_cache   shared:SSL:<span class="number">10</span>m;</span><br><span class="line">    ssl_session_timeout <span class="number">10</span>m;</span><br><span class="line">    ssl_protocols       TLSv1 TLSv1.<span class="number">1</span> TLSv1.<span class="number">2</span>;</span><br><span class="line">    ssl_ciphers         <span class="string">'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'</span>;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新加载配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nginx -t   <span class="comment"># 检验配置文件是否有错误</span></span><br><span class="line">$ sudo nginx <span class="operator">-s</span> reload</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Refferences:</p>
+<ol>
+<li><a href="https://www.nginx.com/blog/nginx-1-9-5/" target="_blank" rel="external">https://www.nginx.com/blog/nginx-1-9-5/</a></li>
+<li><a href="http://www.liaoxuefeng.com/article/0014189023237367e8d42829de24b6eaf893ca47df4fb5e000" target="_blank" rel="external">http://www.liaoxuefeng.com/article/0014189023237367e8d42829de24b6eaf893ca47df4fb5e000</a></li>
+</ol>
 </span>
       
     </div>
@@ -236,9 +268,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ubuntu/" rel="tag">#ubuntu</a>
+            <a href="/tags/http2/" rel="tag">#http2</a>
           
-            <a href="/tags/wifi/" rel="tag">#wifi</a>
+            <a href="/tags/nginx/" rel="tag">#nginx</a>
           
         </div>
       
@@ -247,13 +279,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/06/29/scraping-stackoverflow-with-scrapy-and-mongodb/" rel="prev">Scraping Stackoverflow with Scrapy and MongoDB</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/06/27/leap-year/" rel="next">Leap Year</a>
+              <a href="/2015/09/21/advanced-data-structure-in-python/" rel="next">Advanced Data Structure in Python</a>
             
           </div>
         </div>
@@ -431,9 +461,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'huszhi';
-      var disqus_identifier = '2015/06/28/configure-ubuntu-server-to-use-wifi/';
-      var disqus_title = '配置Ubuntu Server 14.04 连接无线WiFi';
-      var disqus_url = 'https://husless.github.io/2015/06/28/configure-ubuntu-server-to-use-wifi/';
+      var disqus_identifier = '2015/10/01/configure-nginx-with-http2-support/';
+      var disqus_title = 'Configure Nginx with HTTP/2 Support';
+      var disqus_url = 'https://husless.github.io/2015/10/01/configure-nginx-with-http2-support/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
