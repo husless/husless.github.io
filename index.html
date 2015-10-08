@@ -174,6 +174,204 @@
           
           
             
+              <a class="post-title-link" href="/2015/10/07/shell-variables-operations/" itemprop="url">
+                Shell Variables Operations
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-07T18:00:24+08:00" content="2015-10-07">
+            2015-10-07
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Linux/" itemprop="url" rel="index">
+                  <span itemprop="name">Linux</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/10/07/shell-variables-operations/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/07/shell-variables-operations/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>Shell 变量的值，可以通过简单的动作来进行删除、替换。</p>
+<h1 id="变量内容的删除">变量内容的删除</h1><p>假如需要对 Shell 变量的内容进行部分删除，删除的动作可以从前往后删，也可以从后往前删。语法如下：</p>
+<table>
+<thead>
+<tr>
+<th>语法表达式</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${variable#pattern}</code></td>
+<td>若变量内容从前向后匹配 pattern，则将匹配的最短的内容删除，类似正则表达式的非贪婪匹配</td>
+</tr>
+<tr>
+<td><code>${variable##pattern}</code></td>
+<td>若变量内容从前向后匹配 pattern，则将匹配的最长的内容删除，类似正则表达式的贪婪匹配</td>
+</tr>
+<tr>
+<td><code>${variable%pattern}</code></td>
+<td>若变量内容从后向前匹配 pattern，则将匹配的最短的内容删除，类似正则表达式的非贪婪匹配</td>
+</tr>
+<tr>
+<td><code>${variable%%pattern}</code></td>
+<td>若变量内容从后向前匹配 pattern，则将匹配的最长的内容删除，类似正则表达式的贪婪匹配</td>
+</tr>
+</tbody>
+</table>
+<p>在此，以命令 <code>latex</code> 的绝对路径 <code>/usr/local/texlive/2015/bin/x86_64-linux/latex</code> 来进行实验。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ path=$(<span class="built_in">which</span> latex)</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path&#125;</span></span><br><span class="line">/usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/bin/x86_64-linux/latex</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path#/*/&#125;</span>      <span class="comment"># 从前向后，最短匹配，only 最前面的`/`</span></span><br><span class="line">usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/bin/x86_64-linux/latex</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path##/*/&#125;</span>     <span class="comment"># 从前向后，最长匹配，只剩下最后面的 `latex`</span></span><br><span class="line">latex</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path%/*&#125;</span>       <span class="comment"># 从后向前，最短匹配</span></span><br><span class="line">/usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/bin/x86_64-linux</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path%%/local*&#125;</span> <span class="comment"># 从后向前，最长匹配</span></span><br><span class="line">/usr</span><br></pre></td></tr></table></figure>
+<h1 id="变量内容替换">变量内容替换</h1><p>替换语法：</p>
+<table>
+<thead>
+<tr>
+<th>语法表达式</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${variable/old/new}</code></td>
+<td>从前向后匹配，将遇到的第一个 <code>old</code> 替换成 <code>new</code></td>
+</tr>
+<tr>
+<td><code>${variable//old/new}</code></td>
+<td>从前向后匹配，将所有陪陪的 <code>old</code> 替换为 <code>new</code></td>
+</tr>
+</tbody>
+</table>
+<p>以 <code>$PATH</code> 举例，将 <code>bin</code> 替换为大写的 <code>BIN</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ path=<span class="variable">$&#123;PATH&#125;</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path&#125;</span></span><br><span class="line">/opt/mpich-install/bin:/usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/bin/x86_64-linux:/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/<span class="built_in">local</span>/games</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path/bin/BIN&#125;</span>  <span class="comment"># 只替换了第一个</span></span><br><span class="line">/opt/mpich-install/BIN/:/usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/bin/x86_64-linux:/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/<span class="built_in">local</span>/games</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;path//bin/BIN&#125;</span> <span class="comment"># 全部替换</span></span><br><span class="line">/opt/mpich-install/BIN:/usr/<span class="built_in">local</span>/texlive/<span class="number">2015</span>/BIN//x86_64-linux:/usr/<span class="built_in">local</span>/sBIN:/usr/<span class="built_in">local</span>/BIN:/usr/sBIN:/usr/BIN:/sBIN:/BIN:/usr/games:/usr/<span class="built_in">local</span>/games</span><br></pre></td></tr></table></figure>
+<h1 id="变量的测试与内容替换">变量的测试与内容替换</h1><p>某些时候，我们需要检测一下某个变量是否存在，若存在则使用其原有的值，否则给出一个值。虽然，在 Shell Script 中可以用 <code>if...then...</code> 结构来处理，但直接用 <code>bash</code> 提供的内置功能进行测试判断，<br>使得整个程序简洁得多。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">                <span class="comment"># &lt;&lt;=== 空行，表示变量 `var` 不存在或者为空字符</span></span><br><span class="line">$ var=<span class="variable">$&#123;var-Linux&#125;</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;var&#125;</span></span><br><span class="line">Linux</span><br><span class="line">$ var=<span class="string">"Ubuntu Server"</span></span><br><span class="line">$ var=<span class="variable">$&#123;var-Linux&#125;</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;var&#125;</span></span><br><span class="line">Ubuntu Server</span><br></pre></td></tr></table></figure>
+<p>上面的例子中，关键在于减号(-)及其后面的内容，语法格式为 <code>new=${old-default}</code>，其意义为：若变量 <code>old</code> 存在且不为空，则将其内容赋值给变量 <code>new</code>；<br>否则，将给定的 <code>default</code> 赋值给 <code>new</code>。Shell 变量设定语法，还可以将前面语法格式中的 <code>-</code> 改为 <code>:-, +, :+, =, :=, ?, :?</code>，一共 8 种格式，各自的意义为：</p>
+<table>
+<thead>
+<tr>
+<th>语法表达式</th>
+<th><code>old</code> 不存在</th>
+<th><code>old</code> 为空字符串</th>
+<th><code>old</code> 存在且不为空</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new=${old-content}</code></td>
+<td><code>new=content</code></td>
+<td><code>new=</code></td>
+<td><code>new=$old</code></td>
+</tr>
+<tr>
+<td><code>new=${old:-content}</code></td>
+<td><code>new=content</code></td>
+<td><code>new=content</code></td>
+<td><code>new=$old</code></td>
+</tr>
+<tr>
+<td><code>new=${old+content}</code></td>
+<td><code>new=</code></td>
+<td><code>new=content</code></td>
+<td><code>new=content</code></td>
+</tr>
+<tr>
+<td><code>new=${old:+content}</code></td>
+<td><code>new=</code></td>
+<td><code>new=</code></td>
+<td><code>new=content</code></td>
+</tr>
+<tr>
+<td><code>new=${old=content}</code></td>
+<td><code>old=content</code>, <code>new=content</code></td>
+<td><code>old</code> 不变，<code>new=</code></td>
+<td><code>old</code> 不变，<code>new=$old</code></td>
+</tr>
+<tr>
+<td><code>new=${old:=content}</code></td>
+<td><code>old=content</code>, <code>new=content</code></td>
+<td><code>old=content</code>, <code>new=content</code></td>
+<td><code>old</code> 不变，<code>new=$old</code></td>
+</tr>
+<tr>
+<td><code>new=${old?content}</code></td>
+<td><code>content</code> 输出至 <code>stderr</code></td>
+<td><code>old=</code></td>
+<td><code>new=$old</code></td>
+</tr>
+<tr>
+<td><code>new=${old:?content}</code></td>
+<td><code>content</code> 输出至 <code>stderr</code></td>
+<td><code>content</code> 输出至 <code>stderr</code></td>
+<td><code>new=$old</code></td>
+</tr>
+</tbody>
+</table>
+<p>Reference:<br><a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_other" target="_blank" rel="external">鸟哥的 Linux 私房菜</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/01/configure-nginx-with-http2-support/" itemprop="url">
                 Configure Nginx with HTTP/2 Support
               </a>
@@ -1082,97 +1280,6 @@ deque, namedtuple</code> 等，其中最常用的就是 <code>Counter, deque, de
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/07/01/using-scrapy-with-proxies/" itemprop="url">
-                Using Scrapy with Proxies
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-07-01T00:00:00+08:00" content="2015-07-01">
-            2015-07-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Python/" itemprop="url" rel="index">
-                  <span itemprop="name">Python</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/07/01/using-scrapy-with-proxies/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/01/using-scrapy-with-proxies/" itemprop="commentsCount"></span>
-            </a>
-          </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>当使用爬虫抓取网页上的内容时，很多站点对爬虫不是很有好，会有限制访问者IP等反爬机制。此时，使用代理就是一个非常好的选择。而 Scrapy 提供了 HttpProxyMiddleware 来支持代理。</p>
-<p>本文使用的代理IP是从<a href="http://www.kuaidaili.com/free/inha/" target="_blank" rel="external">这里</a>抓取下来的，以 <code>xxx.xxx.xxx.xxx:port</code> 的格式放在 <code>scrapy_project/proxy.txt</code>。然后，Scrapy 从中随机选取一个IP作为 proxy。</p>
-<p>1 要使 Scrapy 通过代理进行抓取，首先需要在 <code>settings.py</code> 里面进行相应设置，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Retry when proxies fail</span></span><br><span class="line">RETRY_TIMES = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Retry on most error codes since proxies fail for different reasons</span></span><br><span class="line">RETRY_HTTP_CODES = [<span class="number">500</span>, <span class="number">503</span>, <span class="number">504</span>, <span class="number">400</span>, <span class="number">403</span>, <span class="number">404</span>, <span class="number">408</span>]</span><br><span class="line"></span><br><span class="line">DOWNLOADER_MIDDLEWARES = &#123;</span><br><span class="line">    <span class="string">'scrapy.downloadermiddlewares.retry.RetryMiddleware'</span>: <span class="number">80</span>,</span><br><span class="line">    <span class="string">'scrapy_project.middlewares.ProxyMiddleware'</span>: <span class="number">90</span>,</span><br><span class="line">    <span class="string">'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware'</span>: <span class="number">100</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2 在 <code>middlewares.py</code> 中定义 <code>ProxyMiddleware</code> 类，将代理IP添加到request.meta中，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span><br><span class="line">This a simple proxy for scrapy. </span><br><span class="line"></span><br><span class="line">The proxy host format like: `http://host:port` or `http://username:password@host:port`</span><br><span class="line">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProxyMiddleware</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""Custom ProxyMiddleware."""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, settings)</span>:</span></span><br><span class="line">        self.proxy_list = settings.get(<span class="string">'PROXY_LIST'</span>)</span><br><span class="line">        <span class="keyword">with</span> open(self.proxy_list) <span class="keyword">as</span> f:</span><br><span class="line">            self.proxies = [ip.strip() <span class="keyword">for</span> ip <span class="keyword">in</span> f]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_request</span><span class="params">(self, request, spider)</span>:</span></span><br><span class="line">        request.meta[<span class="string">'proxy'</span>] = <span class="string">'http://&#123;&#125;'</span>.format(random.choice(self.proxies))</span><br></pre></td></tr></table></figure>
-<p>另外，还可以简单地通过环境变量来设置代理IP</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> http_proxy = http://ip:port</span><br></pre></td></tr></table></figure>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1211,7 +1318,7 @@ deque, namedtuple</code> 等，其中最常用的就是 <code>Counter, deque, de
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1225,7 +1332,7 @@ deque, namedtuple</code> 等，其中最常用的就是 <code>Counter, deque, de
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
