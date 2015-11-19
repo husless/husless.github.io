@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Metaclass,Python," />
+  <meta name="keywords" content="Linux,Oracle,Systemd," />
 
 
 
@@ -39,19 +39,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
+<meta name="description" content="由于开发需要连接 Oracle 数据库，就自己安装了一个 Oracle 12c，但是，每次开机都得手动 lsnrctl start &amp;amp;&amp;amp; dbstart，比较麻烦，我们总是希望开机就自动为我们启动了相关服务，于是就想着自己写一个 systemd.service 来管理 Oracle。
+
+编写 systemd.service 服务脚本，在 /etc/systemd/system/or">
 <meta property="og:type" content="article">
-<meta property="og:title" content="What Is a Metaclass In Python">
-<meta property="og:url" content="https://husless.github.io/2015/07/11/what-is-a-metaclass-in-python/index.html">
+<meta property="og:title" content="Add Oracle as a Systemd Service">
+<meta property="og:url" content="https://husless.github.io/2015/11/01/Add-Oracle-as-a-Systemd-Service/index.html">
 <meta property="og:site_name" content="草原上的狼">
-<meta property="og:description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
-<meta property="og:updated_time" content="2015-10-07T09:38:09.368Z">
+<meta property="og:description" content="由于开发需要连接 Oracle 数据库，就自己安装了一个 Oracle 12c，但是，每次开机都得手动 lsnrctl start &amp;amp;&amp;amp; dbstart，比较麻烦，我们总是希望开机就自动为我们启动了相关服务，于是就想着自己写一个 systemd.service 来管理 Oracle。
+
+编写 systemd.service 服务脚本，在 /etc/systemd/system/or">
+<meta property="og:updated_time" content="2015-11-01T07:54:46.650Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="What Is a Metaclass In Python">
-<meta name="twitter:description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
+<meta name="twitter:title" content="Add Oracle as a Systemd Service">
+<meta name="twitter:description" content="由于开发需要连接 Oracle 数据库，就自己安装了一个 Oracle 12c，但是，每次开机都得手动 lsnrctl start &amp;amp;&amp;amp; dbstart，比较麻烦，我们总是希望开机就自动为我们启动了相关服务，于是就想着自己写一个 systemd.service 来管理 Oracle。
+
+编写 systemd.service 服务脚本，在 /etc/systemd/system/or">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -61,7 +64,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
   };
 </script>
 
-  <title> What Is a Metaclass In Python | 草原上的狼 </title>
+  <title> Add Oracle as a Systemd Service | 草原上的狼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -176,7 +179,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
           
           
             
-              What Is a Metaclass In Python
+              Add Oracle as a Systemd Service
             
           
         </h1>
@@ -185,34 +188,19 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-07-11T00:00:00+08:00" content="2015-07-11">
-            2015-07-11
+          <time itemprop="dateCreated" datetime="2015-11-01T14:06:47+08:00" content="2015-11-01">
+            2015-11-01
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Python/" itemprop="url" rel="index">
-                  <span itemprop="name">Python</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/07/11/what-is-a-metaclass-in-python/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/11/what-is-a-metaclass-in-python/" itemprop="commentsCount"></span>
+            <a href="/2015/11/01/Add-Oracle-as-a-Systemd-Service/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/01/Add-Oracle-as-a-Systemd-Service/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -226,8 +214,22 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       
 
       
-        <span itemprop="articleBody"><p>Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：</p>
-<p><a href="http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python" target="_blank" rel="external">http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</a></p>
+        <span itemprop="articleBody"><p>由于开发需要连接 Oracle 数据库，就自己安装了一个 Oracle 12c，但是，每次开机都得<br>手动 <code>lsnrctl start &amp;&amp; dbstart</code>，比较麻烦，我们总是希望开机就自动为我们启动了相关<br>服务，于是就想着自己写一个 <code>systemd.service</code> 来管理 Oracle。</p>
+<ol>
+<li>编写 <code>systemd.service</code> 服务脚本，在 <code>/etc/systemd/system/oracle.service</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Oracle Service</span><br><span class="line">After=network.target</span><br><span class="line">After=syslog.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=oracle</span><br><span class="line">Group=dba</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/home/oracle/bin/oracle.sh start</span><br><span class="line">ExecReload=/home/oracle/bin/oracle.sh restart</span><br><span class="line">ExecStop=/home/oracle/bin/oracle.sh stop</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Alias=oracle.service</span><br></pre></td></tr></table></figure>
+<p>关于，<code>systemd.service</code> 服务文件的语法格式，参见 <code>man systemd.service</code> 或者 <a href="https://wiki.archlinux.org/index.php/Systemd" target="_blank" rel="external">ArchLinux 关于 Systemd</a> 的文档，这个相当详细。</p>
+<ol>
+<li>写一个启动脚本，放在 <code>/home/oracle/bin/oracle.sh</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"></span></span><br><span class="line"><span class="built_in">export</span> ORACLE_BASE=/u01/app/oracle</span><br><span class="line"><span class="built_in">export</span> ORACLE_HOME=/<span class="variable">$&#123;ORACLE_BASE&#125;</span>/product/<span class="number">12.1</span>.<span class="number">0</span>/dbhome_1</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">oracle_start</span></span>()&#123;</span><br><span class="line">    <span class="variable">$&#123;ORACLE_HOME&#125;</span>/bin/lsnrctl start</span><br><span class="line">    <span class="variable">$&#123;ORACLE_HOME&#125;</span>/bin/dbstart</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">oracle_stop</span></span>()&#123;</span><br><span class="line">    <span class="variable">$&#123;ORACLE_HOME&#125;</span>/bin/dbshut</span><br><span class="line">    <span class="variable">$&#123;ORACLE_HOME&#125;</span>/bin/lsnrctl stop</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">start)</span><br><span class="line">    oracle_start</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Oracle Started Successfully."</span></span><br><span class="line">    ;;</span><br><span class="line">stop)</span><br><span class="line">    oracle_stop</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Oracle Stopped."</span></span><br><span class="line">    ;;</span><br><span class="line">restart)</span><br><span class="line">    oracle_stop</span><br><span class="line">    oracle_start</span><br><span class="line">    ;;</span><br><span class="line">status)</span><br><span class="line">    <span class="variable">$&#123;ORACLE_HOME&#125;</span>/bin/lsnrctl status</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$(basename $0)</span> &#123;start|strop|restart|status&#125;"</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>enable 刚刚写的服务:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemdctl <span class="built_in">enable</span> oracle.service</span><br></pre></td></tr></table></figure>
+<p>我在此时启动 Oracle 时，突然出现了一个意想不到的错误：<code>TNS-01190</code>。在网上搜索了一下，原因可能是 <code>listener.ora</code> 文件的权限不对；另一个是其他用户已经<br>启动了一个监听。<code>ps -ef | grep -i listener</code> 一看，果然是以另外一个用户身份启动了一个监听，在 Xshell 里面开了多个登陆连接，用另一个用户执行了 <code>lsnrctl start</code>，<br>然后试图以 <code>oracle</code> 用户身份执行 <code>lsnrctl stop</code>，当然会出错。真是粗心大意啊。。。</p>
+<p>Refference:</p>
 </span>
       
     </div>
@@ -236,9 +238,11 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       
         <div class="post-tags">
           
-            <a href="/tags/Metaclass/" rel="tag">#Metaclass</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
           
-            <a href="/tags/Python/" rel="tag">#Python</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+          
+            <a href="/tags/Systemd/" rel="tag">#Systemd</a>
           
         </div>
       
@@ -247,13 +251,13 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/13/the-first-sight-on-meteor/" rel="prev">初识 Meteor</a>
+              <a href="/2015/11/19/Problems-When-Compiling-GCC/" rel="prev">Problems when Compiling GCC</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/03/matlab-automatic-broadcasting-operation-applied/" rel="next">Matlab Automatic Broadcasting Operation Applied</a>
+              <a href="/2015/10/07/shell-variables-operations/" rel="next">Shell Variables Operations</a>
             
           </div>
         </div>
@@ -431,9 +435,9 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
 
     <script type="text/javascript">
       var disqus_shortname = 'huszhi';
-      var disqus_identifier = '2015/07/11/what-is-a-metaclass-in-python/';
-      var disqus_title = 'What Is a Metaclass In Python';
-      var disqus_url = 'https://husless.github.io/2015/07/11/what-is-a-metaclass-in-python/';
+      var disqus_identifier = '2015/11/01/Add-Oracle-as-a-Systemd-Service/';
+      var disqus_title = 'Add Oracle as a Systemd Service';
+      var disqus_url = 'https://husless.github.io/2015/11/01/Add-Oracle-as-a-Systemd-Service/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');

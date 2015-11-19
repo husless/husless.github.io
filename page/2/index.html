@@ -174,6 +174,182 @@
           
           
             
+              <a class="post-title-link" href="/2015/07/11/what-is-a-metaclass-in-python/" itemprop="url">
+                What Is a Metaclass In Python
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-11T00:00:00+08:00" content="2015-07-11">
+            2015-07-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Python/" itemprop="url" rel="index">
+                  <span itemprop="name">Python</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/11/what-is-a-metaclass-in-python/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/11/what-is-a-metaclass-in-python/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：</p>
+<p><a href="http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python" target="_blank" rel="external">http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/07/03/matlab-automatic-broadcasting-operation-applied/" itemprop="url">
+                Matlab Automatic Broadcasting Operation Applied
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-07-03T00:00:00+08:00" content="2015-07-03">
+            2015-07-03
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Matlab/" itemprop="url" rel="index">
+                  <span itemprop="name">Matlab</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/03/matlab-automatic-broadcasting-operation-applied/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/03/matlab-automatic-broadcasting-operation-applied/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>在使用 Matlab 做 machine learning 练习时，将两个不同维度的矩阵相减，结果正确但出现了如下的警告：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">warning: operator -: automatic broadcasting operation applied</span><br></pre></td></tr></table></figure>
+<p>出现此警告的根源在于两个矩阵的维度不一致。</p>
+<p>但，我们知道，在Matlab中一个矩阵与一个实数进行四则运算，实际上是对矩阵的没一个矩阵元做相应的运算。那么，是否可以对此规则进行推广呢？比如，一个$M \times N$ 的矩阵 A 减去一个 $1 \times N$ 的向量 b，就相当于用 A 的每一行与 b 相减，它们之间维度一致，可以进行计算，结果也符合我们的期望。 For example,</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">octave:<span class="number">3</span>&gt; a</span><br><span class="line">a =</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>   <span class="number">3</span></span><br><span class="line"><span class="number">1</span>   <span class="number">3</span></span><br><span class="line"><span class="number">1</span>   <span class="number">3</span></span><br><span class="line"><span class="number">1</span>   <span class="number">3</span></span><br><span class="line"><span class="number">1</span>   <span class="number">3</span></span><br><span class="line">octave:<span class="number">4</span>&gt; a - [<span class="number">1</span> <span class="number">2</span>]</span><br><span class="line">warning: <span class="keyword">operator</span> -: automatic broadcasting operation applied</span><br><span class="line">ans =</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>应该如何避免警告信息呢？ Google 了一番之后，在 <a href="http://stackoverflow.com/questions/18475627/automatic-broadcasting-operation-applied-on-equally-sized-matrices" target="_blank" rel="external">stackoverflow.com</a> 上发现同样的问题。Matlab 内置函数 <code>bsxfun</code> or <code>repmat</code> 可以解决这个问题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">octave:<span class="number">5</span>&gt; a - repmat([<span class="number">1</span> <span class="number">2</span>], <span class="number">5</span>, <span class="number">1</span>)</span><br><span class="line">ans =</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"></span><br><span class="line">octave:<span class="number">6</span>&gt; bsxfun(@minus, a, [<span class="number">1</span> <span class="number">2</span>])</span><br><span class="line">ans =</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br><span class="line"><span class="number">0</span>   <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><code>bsxfun</code> 和 <code>repmat</code> 的具体用法，可以查阅文档，故不在此赘述。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/07/01/using-scrapy-with-proxies/" itemprop="url">
                 Using Scrapy with Proxies
               </a>
@@ -580,7 +756,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -594,7 +770,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

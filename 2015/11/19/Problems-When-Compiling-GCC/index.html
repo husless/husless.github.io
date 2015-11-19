@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Metaclass,Python," />
+  <meta name="keywords" content="Linux,Oracle,Systemd," />
 
 
 
@@ -39,19 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
+<meta name="description" content="自行编译安装最新版本的 GCC 编译器，按照 GNU 的安装文档一步步做下来，有一个关键步骤就是要先 unset 掉一些环境变量，否则会出现各种意想不到的问题，连 Google 都要着好半天才能找到解决办法。
+1unset C_INCLUDE_PATH CPLUS_INCLUDE_PATH LIBRARY_PATH">
 <meta property="og:type" content="article">
-<meta property="og:title" content="What Is a Metaclass In Python">
-<meta property="og:url" content="https://husless.github.io/2015/07/11/what-is-a-metaclass-in-python/index.html">
+<meta property="og:title" content="Problems when Compiling GCC">
+<meta property="og:url" content="https://husless.github.io/2015/11/19/Problems-When-Compiling-GCC/index.html">
 <meta property="og:site_name" content="草原上的狼">
-<meta property="og:description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
-<meta property="og:updated_time" content="2015-10-07T09:38:09.368Z">
+<meta property="og:description" content="自行编译安装最新版本的 GCC 编译器，按照 GNU 的安装文档一步步做下来，有一个关键步骤就是要先 unset 掉一些环境变量，否则会出现各种意想不到的问题，连 Google 都要着好半天才能找到解决办法。
+1unset C_INCLUDE_PATH CPLUS_INCLUDE_PATH LIBRARY_PATH">
+<meta property="og:updated_time" content="2015-11-19T07:13:08.779Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="What Is a Metaclass In Python">
-<meta name="twitter:description" content="Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
+<meta name="twitter:title" content="Problems when Compiling GCC">
+<meta name="twitter:description" content="自行编译安装最新版本的 GCC 编译器，按照 GNU 的安装文档一步步做下来，有一个关键步骤就是要先 unset 掉一些环境变量，否则会出现各种意想不到的问题，连 Google 都要着好半天才能找到解决办法。
+1unset C_INCLUDE_PATH CPLUS_INCLUDE_PATH LIBRARY_PATH">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -61,7 +61,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
   };
 </script>
 
-  <title> What Is a Metaclass In Python | 草原上的狼 </title>
+  <title> Problems when Compiling GCC | 草原上的狼 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -176,7 +176,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
           
           
             
-              What Is a Metaclass In Python
+              Problems when Compiling GCC
             
           
         </h1>
@@ -185,34 +185,19 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-07-11T00:00:00+08:00" content="2015-07-11">
-            2015-07-11
+          <time itemprop="dateCreated" datetime="2015-11-19T15:06:47+08:00" content="2015-11-19">
+            2015-11-19
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Python/" itemprop="url" rel="index">
-                  <span itemprop="name">Python</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/07/11/what-is-a-metaclass-in-python/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/11/what-is-a-metaclass-in-python/" itemprop="commentsCount"></span>
+            <a href="/2015/11/19/Problems-When-Compiling-GCC/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/19/Problems-When-Compiling-GCC/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -226,8 +211,8 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       
 
       
-        <span itemprop="articleBody"><p>Python中关于metaclass的问题，Stack overflow上有一相当精彩的描述：</p>
-<p><a href="http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python" target="_blank" rel="external">http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</a></p>
+        <span itemprop="articleBody"><p>自行编译安装最新版本的 GCC 编译器，按照 GNU 的安装文档一步步做下来，有一个关键步骤就是<br>要先 unset 掉一些环境变量，否则会出现各种意想不到的问题，连 Google 都要着好半天才能找到解决办法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unset</span> C_INCLUDE_PATH CPLUS_INCLUDE_PATH LIBRARY_PATH</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -236,9 +221,11 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
       
         <div class="post-tags">
           
-            <a href="/tags/Metaclass/" rel="tag">#Metaclass</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
           
-            <a href="/tags/Python/" rel="tag">#Python</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+          
+            <a href="/tags/Systemd/" rel="tag">#Systemd</a>
           
         </div>
       
@@ -247,13 +234,11 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/13/the-first-sight-on-meteor/" rel="prev">初识 Meteor</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/03/matlab-automatic-broadcasting-operation-applied/" rel="next">Matlab Automatic Broadcasting Operation Applied</a>
+              <a href="/2015/11/01/Add-Oracle-as-a-Systemd-Service/" rel="next">Add Oracle as a Systemd Service</a>
             
           </div>
         </div>
@@ -431,9 +416,9 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">
 
     <script type="text/javascript">
       var disqus_shortname = 'huszhi';
-      var disqus_identifier = '2015/07/11/what-is-a-metaclass-in-python/';
-      var disqus_title = 'What Is a Metaclass In Python';
-      var disqus_url = 'https://husless.github.io/2015/07/11/what-is-a-metaclass-in-python/';
+      var disqus_identifier = '2015/11/19/Problems-When-Compiling-GCC/';
+      var disqus_title = 'Problems when Compiling GCC';
+      var disqus_url = 'https://husless.github.io/2015/11/19/Problems-When-Compiling-GCC/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
